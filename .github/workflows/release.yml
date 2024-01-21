@@ -1,9 +1,9 @@
-name: Create Release
+name: Scheduled Release
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    # Runs at 10:00 UTC every other Monday (every two weeks)
+    - cron: '0 10 * * 1/14'
 
 jobs:
   build:
@@ -23,6 +23,7 @@ jobs:
 
   release:
     needs: build
+    if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
