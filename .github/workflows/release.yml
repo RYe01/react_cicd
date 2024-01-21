@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@v2
     - name: Set up Node.js
       uses: actions/setup-node@v1
@@ -27,6 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Extract user story from commit message
+      id: extract_story
+      run: |
+        STORY=$(git log -1 --pretty=%B | grep -oP '(?<=User Story: ).*')
+        if [ -z "$STORY" ]; then
+          echo "User story not found in the commit message!"
+          exit 1
+        fi
+        echo "::set-output name=story::$STORY"
     - name: Bump version and push tag
       id: tag_version
       uses: mathieudutour/github-tag-action@v5.6
@@ -43,4 +51,5 @@ jobs:
         release_name: Release ${{ steps.tag_version.outputs.new_tag }}
         body: |
           Changes in this Release
-          - ${{ github.event.head_commit.message }}
+          - User Story: ${{ steps.extract_story.outputs.story }}
+          - Commit details: ${{ github.event.head_commit.message }}
