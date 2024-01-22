@@ -24,7 +24,7 @@ jobs:
       run: npm test
 
     - name: Run Linter
-      run: npm run lint -- --format json --output-file eslint-report.json
+      run: npm run lint -- --format node_modules/eslint-html-reporter/reporter.js --output-file eslint-report.html
       continue-on-error: true
 
     - name: Upload ESLint Report
@@ -32,7 +32,7 @@ jobs:
       if: always() # Ensure report is uploaded even if linting fails
       with:
         name: eslint-report
-        path: eslint-report.json
+        path: eslint-report.html
 
     - name: Build
       run: npm run build
