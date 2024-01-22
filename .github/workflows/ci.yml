@@ -34,6 +34,15 @@ jobs:
         name: eslint-report
         path: eslint-report.html
 
+    - name: Run Plato Analysis
+      run: npm run plato
+
+    - name: Upload Plato Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: plato-report
+        path: report/
+
     - name: Build
       run: npm run build
 
