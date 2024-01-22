@@ -23,6 +23,10 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Run Linter
+      run: npm run lint
+      continue-on-error: true
+
     - name: Build
       run: npm run build
 
